@@ -144,6 +144,9 @@ void insertAtEnd(){
 
 // function to return the number fo nodes in a linked list
 int count(){
+    if (head==nullptr){
+        cout << "The list is empty.\n";
+    }
     int count=0;
     temp=head;
     while (temp!=nullptr)
@@ -156,21 +159,22 @@ int count(){
 
 // function to insert at the nth position this one the challenging one to implement the target is to find the to find the position of the Node before the given position
 void insertAtNthPosition(){
-    Node *newNode=new Node();
     int pos;
     cout << "Enter position: ";
     cin >> pos;
     if(pos < 1 || pos > count()+1){
         cout <<"Invalid position.\n";
     }else{
+        Node *newNode=new Node();
         if(pos==1){ // if pos = 1 then we want to insert at the beginning 
             insertAtBeginning();
+            return;
         }else if(pos==count()+1){ // if pos = count()+1 then we want to insert at the end 
             insertAtEnd();
+            return;
         }else{
         cout << "Enter the number you want to insert at " << pos << ": ";
         cin>>newNode->data;
-        newNode->next=nullptr;
             temp=head;
             for(int i=1; i<pos-1; ++i){
                 temp=temp->next;
@@ -210,35 +214,47 @@ void deletingTheLastNode(){
 }
 
 // function to delete the nth node in the linked list
-void deletingTheNthNode(){
+void deletingTheNthNode() {
     int pos;
     cout << "Enter the position you want to delete: ";
-    cin>> pos;
-    if (pos < 1 || pos > count()+1){
+    cin >> pos;
+
+    if (pos < 1 || pos > count()) {
         cout << "Invalid position.\n";
-    }else{
-        if(head==nullptr){
-            cout << "The list is empty.\n";
-        }else {
-            if(pos == 1){
-                deletingTheFirstNode();
-            }else if (pos == count())
-            {
-                deletingTheLastNode();
-            }else{
-                temp=head;
-                Node *prevNode=nullptr;
-                for(int i=1;i<pos-1;++i){
-                    prevNode=temp;
-                    temp=temp->next;
-                }
-                prevNode->next=temp->next;
-                delete temp;
-                cout << "The " <<pos << "th Node deleted successfully.\n";
-            }
-        } 
-        
+        return;
     }
+
+    if (head == nullptr) {
+        cout << "The list is empty.\n";
+        return;
+    }
+
+    if (pos == 1) {
+        deletingTheFirstNode();
+        return;
+    }
+
+    if (pos == count()) {
+        deletingTheLastNode();
+        return;
+    }
+
+    // General case: delete node at position 'pos'
+    temp = head;
+    Node* prevNode = nullptr;
+
+    // Traverse to the (pos - 1)-th node
+    for (int i = 1; i < pos; ++i) {
+        prevNode = temp;
+        temp = temp->next;
+    }
+
+    if (prevNode != nullptr) {
+        prevNode->next = temp->next;
+    }
+
+    delete temp; // Free the memory of the node to delete
+    cout << "The " << pos << "th Node deleted successfully.\n";
 }
 
 // reversing a linked list => it is changing the direction of our linked list the end becomes the start and the start becomes the end
